@@ -1,0 +1,87 @@
+name: Backend CI
+
+on:
+  push:
+    branches:
+      - main
+      - staging
+    paths-ignore:
+      - "README.md"
+      - "docs/**"
+  pull_request:
+    branches:
+      - main
+      - staging
+    paths-ignore:
+      - "README.md"
+      - "docs/**"
+
+jobs:
+  lint-and-type-check:
+    name: Lint & Type Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+          # Install ruff and mypy if not included in [dev]
+          pip install ruff mypy
+
+      - name: Run Ruff (Linting)
+        run: ruff check .
+
+      - name: Run Mypy (Type Checking)
+        run: mypy app/
+
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+          pip install pytest pytest-cov pytest-asyncio
+
+      - name: Run Pytest with Coverage
+        run: pytest --cov=app --cov-fail-under=80 tests/
+
+  security-scan:
+    name: Security Scan (SAST)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Bandit
+        run: pip install bandit
+
+      - name: Run Bandit (Python SAST)
+        run: bandit -r app/ -c pyproject.toml
