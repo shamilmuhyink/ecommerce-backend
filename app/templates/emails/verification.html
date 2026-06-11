@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <meta name="supported-color-schemes" content="light dark">
+    <title>Welcome to {{ company_name | default('Glowey') }}</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+
+        table,
+        td {
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+        }
+
+        img {
+            border: 0;
+            height: auto;
+            line-height: 100%;
+            outline: none;
+            text-decoration: none;
+            -ms-interpolation-mode: bicubic;
+        }
+
+        /* Dark Mode Styles */
+        @media (prefers-color-scheme: dark) {
+
+            body,
+            .bg-body {
+                background-color: #171A21 !important;
+            }
+
+            .bg-container {
+                background-color: #171A21 !important;
+            }
+
+            .text-heading {
+                color: #FFFFFF !important;
+            }
+
+            .text-main {
+                color: #E2E8F0 !important;
+            }
+
+            .text-footer {
+                color: #94A3B8 !important;
+            }
+
+            .logo-text {
+                color: #FFFFFF !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-body" style="margin: 0; padding: 0; background-color: #F8FAFC;">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" class="bg-body" style="background-color: #F8FAFC;">
+        <tr>
+            <td align="center">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" class="bg-container"
+                    style="max-width: 600px; margin: 0 auto; background-color: #FFFFFF;">
+                    <tr>
+                        <td style="padding: 40px 20px;">
+
+                            <!-- Logo -->
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-bottom: 30px;">
+                                <tr>
+                                    <td align="left" class="logo-text"
+                                        style="font-size: 24px; font-weight: bold; color: #0F172A; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                                        {% if logo_url %}
+                                        <img src="{{ logo_url }}" alt="Logo" height="32"
+                                            style="display: block; border-radius: 0;">
+                                        {% else %}
+                                        <img src="{{ frontend_url | default('http://localhost:4200') }}/logo.png"
+                                            alt="{{ company_name | default('Glowey') }} Logo" height="32"
+                                            style="display: inline-block; vertical-align: middle; border-radius: 0; margin-right: 8px;">
+                                        <span style="vertical-align: middle;">{{ company_name | default('Glowey')
+                                            }}</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Hero Image -->
+                            <img src="{{ hero_image_url | default('https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80') }}"
+                                alt="Hero Image"
+                                style="width: 100%; max-width: 600px; height: 300px; object-fit: cover; border-radius: 0; margin-bottom: 30px; display: block;">
+
+                            <!-- Content -->
+                            <h1 class="text-heading"
+                                style="color: #0F172A; font-size: 24px; margin-bottom: 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                                Welcome {{ name | default('Alex') }},</h1>
+
+                            <p class="text-main"
+                                style="font-size: 15px; line-height: 1.6; color: #334155; margin-bottom: 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                                Welcome to Glowey! We're thrilled to have you join our community of clean beauty and radiant skincare enthusiasts.
+                            </p>
+
+                            <p class="text-main"
+                                style="font-size: 15px; line-height: 1.6; color: #334155; margin-bottom: 30px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                                To secure your account and start exploring our premium, curated products, please verify your email address by clicking the button below. Enjoy your Glowey benefits:
+                            </p>
+
+                            <!-- Features List -->
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-bottom: 30px;">
+                                <tr>
+                                    <td width="50%" style="padding-bottom: 15px;">
+                                        <table border="0" cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td valign="middle" style="padding-right: 10px;">
+                                                    <img src="https://img.icons8.com/color/48/000000/checked--v1.png"
+                                                        width="20" height="20" style="display: block; border-radius: 0;"
+                                                        alt="&#10003;">
+                                                </td>
+                                                <td valign="middle" class="text-main"
+                                                    style="color: #334155; font-size: 14px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                                                    Curated Clean Beauty
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td width="50%" style="padding-bottom: 15px;">
+                                        <table border="0" cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td valign="middle" style="padding-right: 10px;">
+                                                    <img src="https://img.icons8.com/color/48/000000/checked--v1.png"
+                                                        width="20" height="20" style="display: block; border-radius: 0;"
+                                                        alt="&#10003;">
+                                                </td>
+                                                <td valign="middle" class="text-main"
+                                                    style="color: #334155; font-size: 14px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                                                    Exclusive Member Offers
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="50%">
+                                        <table border="0" cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td valign="middle" style="padding-right: 10px;">
+                                                    <img src="https://img.icons8.com/color/48/000000/checked--v1.png"
+                                                        width="20" height="20" style="display: block; border-radius: 0;"
+                                                        alt="&#10003;">
+                                                </td>
+                                                <td valign="middle" class="text-main"
+                                                    style="color: #334155; font-size: 14px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                                                    Personalized Routines
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td width="50%">
+                                        <table border="0" cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td valign="middle" style="padding-right: 10px;">
+                                                    <img src="https://img.icons8.com/color/48/000000/checked--v1.png"
+                                                        width="20" height="20" style="display: block; border-radius: 0;"
+                                                        alt="&#10003;">
+                                                </td>
+                                                <td valign="middle" class="text-main"
+                                                    style="color: #334155; font-size: 14px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                                                    Fast, Secure Checkout
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <p class="text-main"
+                                style="font-size: 15px; line-height: 1.6; color: #334155; margin-bottom: 5px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                                Thanks,</p>
+                            <p class="text-main"
+                                style="font-size: 15px; line-height: 1.6; color: #334155; margin-bottom: 30px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                                {{ team_name | default('Glowey Team') }}</p>
+
+                            <!-- Button -->
+                            <table border="0" cellpadding="0" cellspacing="0" style="margin-bottom: 40px;">
+                                <tr>
+                                    <td align="center" bgcolor="#3B82F6" style="border-radius: 0;">
+                                        <a href="{{ verification_link | default('http://localhost:4200/verify?token=' ~ token) }}"
+                                            style="display: inline-block; padding: 14px 28px; color: #FFFFFF; text-decoration: none; font-size: 16px; font-weight: 600; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; border-radius: 0;">Confirm
+                                            Email Address</a>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Footer -->
+                            <div class="text-footer"
+                                style="margin-top: 40px; font-size: 13px; color: #64748B; line-height: 1.5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                                <p style="margin-bottom: 20px;">
+                                    This email was sent to <a href="mailto:{{ email | default('angel@Glowey.com') }}"
+                                        style="color: #3B82F6; text-decoration: none;">{{ email |
+                                        default('angel@Glowey.com') }}</a>. If you'd rather not receive this kind of
+                                    email, Don't want any more emails from {{ company_name | default('Glowey') }}? <a
+                                        href="{{ unsubscribe_link | default('#') }}"
+                                        style="color: #3B82F6; text-decoration: underline;">Unsubscribe</a>.
+                                </p>
+
+                                <p style="margin: 0;">
+                                    {{ company_address | default('100 Smith Street, Melbourne VIC 3000') }}<br>
+                                    © {{ current_year | default('2022') }} {{ company_name | default('Glowey') }}
+                                </p>
+                            </div>
+
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>

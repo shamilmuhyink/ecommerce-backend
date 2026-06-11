@@ -1,0 +1,57 @@
+# Exported from Render on 2026-06-10T08:07:26Z
+version: "1"
+projects:
+- name: My project
+  environments:
+  - name: Staging
+    services:
+    - type: web
+      name: ecom-backend
+      runtime: docker
+      repo: https://gitlab.com/shamilmuhyin/skincare-backend
+      plan: free
+      envVars:
+      - key: SHIPROCKET_PASSWORD
+        sync: false
+      - key: SHIPROCKET_EMAIL
+        sync: false
+      - key: RAZORPAY_WEBHOOK_SECRET
+        sync: false
+      - key: RAZORPAY_KEY_SECRET
+        sync: false
+      - key: RAZORPAY_KEY_ID
+        sync: false
+      - key: AWS_SES_SENDER
+        sync: false
+      - key: AWS_S3_BUCKET
+        sync: false
+      - key: AWS_REGION
+        sync: false
+      - key: REFRESH_TOKEN_EXPIRE_DAYS
+        sync: false
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: DATABASE_MAX_OVERFLOW
+        sync: false
+      - key: DATABASE_POOL_SIZE
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: ALLOWED_ORIGINS
+        sync: false
+      - key: SECRET_KEY
+        sync: false
+      - key: DEBUG
+        sync: false
+      - key: APP_ENV
+        sync: false
+      - key: APP_NAME
+        sync: false
+      region: singapore
+      dockerContext: .
+      dockerfilePath: ./Dockerfile.staging
+      domains:
+      - api.skinglow.website
+      autoDeployTrigger: commit

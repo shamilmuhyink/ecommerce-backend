@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block subject %}{% endblock %}</title>
+    <style>
+        /* Base styles */
+        body,
+        table,
+        td,
+        a {
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+
+        table,
+        td {
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+        }
+
+        img {
+            -ms-interpolation-mode: bicubic;
+        }
+
+        /* Reset */
+        img {
+            border: 0;
+            height: auto;
+            line-height: 100%;
+            outline: none;
+            text-decoration: none;
+        }
+
+        table {
+            border-collapse: collapse !important;
+        }
+
+        body {
+            height: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100% !important;
+            background-color: #FAFAFA;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+
+        /* Container */
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #FFFFFF;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Header */
+        .header {
+            padding: 40px 0;
+            text-align: center;
+            background-color: #FFF9F9;
+            border-bottom: 1px solid #F0E6E6;
+        }
+
+        .header h1 {
+            margin: 0;
+            color: #b76e79;
+            /* Rose Gold */
+            font-size: 28px;
+            font-weight: 300;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        /* Body */
+        .content {
+            padding: 40px 30px;
+            color: #4A4A4A;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        h2 {
+            color: #333333;
+            font-size: 22px;
+            font-weight: 400;
+            margin-top: 0;
+        }
+
+        p {
+            margin: 0 0 20px 0;
+        }
+
+        /* Buttons */
+        .button {
+            display: inline-block;
+            padding: 14px 32px;
+            background-color: #b76e79;
+            /* Rose Gold */
+            color: #FFFFFF !important;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            margin: 20px 0;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 30px;
+            text-align: center;
+            background-color: #FAFAFA;
+            color: #999999;
+            font-size: 12px;
+            line-height: 1.5;
+            border-top: 1px solid #EEEEEE;
+        }
+
+        .footer a {
+            color: #b76e79;
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media screen and (max-width: 600px) {
+            .email-container {
+                width: 100% !important;
+                border-radius: 0 !important;
+            }
+
+            .content {
+                padding: 30px 20px !important;
+            }
+        }
+    </style>
+</head>
+
+<body style="margin: 0; padding: 0; background-color: #FAFAFA;">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;">
+        <tr>
+            <td align="center" style="padding: 40px 10px;">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" class="email-container">
+                    <!-- Header -->
+                    <tr>
+                        <td align="center" class="header">
+                            <h1>GLOWEY</h1>
+                        </td>
+                    </tr>
+
+                    <!-- Main Content -->
+                    <tr>
+                        <td class="content">
+                            {% block content %}
+                            <!-- Specific email content goes here -->
+                            {% endblock %}
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td class="footer">
+                            <p>You received this email because you signed up for an account at Glowey.</p>
+                            <p>&copy; {{ current_year|default('2026') }} Glowey Skincare. All rights reserved.</p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>
