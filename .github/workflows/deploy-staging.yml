@@ -60,7 +60,8 @@ jobs:
             export VAULT_TOKEN="${{ secrets.VAULT_TOKEN }}"
             
             # Navigate to application directory
-            mkdir -p /opt/ecommerce
+            sudo mkdir -p /opt/ecommerce
+            sudo chown -R ubuntu:ubuntu /opt/ecommerce
             cd /opt/ecommerce
             
             # Export environment variable for docker-compose
