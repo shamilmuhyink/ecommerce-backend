@@ -3,14 +3,12 @@ name: Backend CI
 on:
   push:
     branches:
-      - main
       - staging
     paths-ignore:
       - "README.md"
       - "docs/**"
   pull_request:
     branches:
-      - main
       - staging
     paths-ignore:
       - "README.md"
