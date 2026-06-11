@@ -64,6 +64,10 @@ jobs:
             sudo chown -R ubuntu:ubuntu /opt/ecommerce
             cd /opt/ecommerce
             
+            # Fetch secrets from Hashicorp Vault and write to .env file
+            echo "Fetching secrets from Vault..."
+            vault kv get -format=json secret/staging/ecommerce-backend | jq -r '.data.data | to_entries | map("\(.key)=\(.value|tostring)") | .[]' > .env
+            
             # Export environment variable for docker-compose
             export GITHUB_REPOSITORY_OWNER="${{ github.repository_owner }}"
 
