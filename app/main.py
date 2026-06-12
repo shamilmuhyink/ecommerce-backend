@@ -1,12 +1,12 @@
 """FastAPI application factory, lifespan, and middleware registration."""
 
-from contextlib import asynccontextmanager
 import os
+from contextlib import asynccontextmanager
 
 import structlog
 from fastapi import FastAPI, Request
-from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from starlette.responses import JSONResponse
 
 from app.api.v1.router import api_router

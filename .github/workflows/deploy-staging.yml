@@ -77,10 +77,10 @@ jobs:
             
             # Run Alembic migrations against Supabase
             # Assuming DB_URL is fetched from Vault and injected via environment
-            docker compose -f docker-compose.staging.yml run --rm backend alembic upgrade head
+            docker-compose -f docker-compose.staging.yml run --rm backend alembic upgrade head
             
-            # Restart the backend service
-            docker compose -f docker-compose.staging.yml up -d backend
+            # Restart the services
+            docker-compose -f docker-compose.staging.yml up -d
             
             # Cleanup unused images
             docker image prune -f
