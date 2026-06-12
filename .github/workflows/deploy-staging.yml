@@ -80,7 +80,7 @@ jobs:
             
             # Fetch secrets from Hashicorp Vault and write to env files
             echo "Fetching secrets from Vault..."
-            vault kv get -format=json secret/staging/ecommerce-backend | jq -r '(if .data.data then .data.data else .data end) | to_entries | map("\(.key)=\(.value|tostring)") | .[]' > .env.staging
+            vault kv get -format=json secret/staging/ecommerce-backend | jq -r '.data.data | to_entries[] | "\(.key)=\(.value)"' > .env.staging
             
             # Also copy as .env for docker-compose env_file directive
             cp .env.staging .env
