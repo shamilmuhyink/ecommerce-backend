@@ -104,7 +104,7 @@ jobs:
             docker ps -a --filter "name=ecommerce_backend_staging" -q | xargs -r docker rm -f 2>/dev/null || true
             
             # Run Alembic migrations against Supabase
-            docker compose -f docker-compose.staging.yml run --rm backend alembic upgrade head
+            # docker compose -f docker-compose.staging.yml run --rm backend alembic upgrade head
             
             # Restart the services
             docker compose -f docker-compose.staging.yml down
