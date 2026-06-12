@@ -1,29 +1,30 @@
 import asyncio
 from logging.config import fileConfig
 
+from alembic import context
 from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
-from alembic import context
+from app.core.config import get_settings
 
 # Import models — ALL models must be imported here for autogenerate
 from app.models.base import Base
-from app.models.user import User, Address, Vendor  # noqa
-from app.models.product import Product, Category, ProductVariant  # noqa
-from app.models.order import Order, OrderItem  # noqa
-from app.models.payment import Payment  # noqa
 from app.models.cart import Cart, CartItem  # noqa
 from app.models.coupon import Coupon, CouponUsage  # noqa
-from app.models.return_request import ReturnRequest, ReturnItem  # noqa
-from app.core.config import get_settings
+from app.models.order import Order, OrderItem  # noqa
+from app.models.payment import Payment  # noqa
+from app.models.product import Category, Product, ProductVariant  # noqa
+from app.models.return_request import ReturnItem, ReturnRequest  # noqa
+from app.models.user import Address, User, Vendor  # noqa
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
 
 settings = get_settings()
-config.set_main_option("sqlalchemy.url", str(settings.DATABASE_URL))
+db_url = str(settings.DATABASE_URL).replace("%", "%%")
+config.set_main_option("sqlalchemy.url", db_url)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
