@@ -47,6 +47,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Copy docker-compose file to OCI
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.OCI_HOST_IP }}
+          username: ubuntu
+          key: ${{ secrets.OCI_SSH_KEY }}
+          source: "docker-compose.staging.yml"
+          target: "/home/ubuntu/"
+
       - name: Execute deployment on OCI via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -62,6 +74,7 @@ jobs:
             # Navigate to application directory
             sudo mkdir -p /opt/ecommerce
             sudo chown -R ubuntu:ubuntu /opt/ecommerce
+            mv /home/ubuntu/docker-compose.staging.yml /opt/ecommerce/
             cd /opt/ecommerce
             
             # Fetch secrets from Hashicorp Vault and write to .env file
