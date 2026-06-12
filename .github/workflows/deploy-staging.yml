@@ -89,8 +89,10 @@ jobs:
             echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:staging
             
+            # Force-remove old containers to prevent ContainerConfig error
+            docker rm -f ecommerce_backend_staging 2>/dev/null || true
+            
             # Run Alembic migrations against Supabase
-            # Assuming DB_URL is fetched from Vault and injected via environment
             docker-compose -f docker-compose.staging.yml run --rm backend alembic upgrade head
             
             # Restart the services
