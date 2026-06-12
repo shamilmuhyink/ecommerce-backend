@@ -14,7 +14,7 @@ class FileUploadService:
         extension = file.filename.split(".")[-1] if file.filename else "jpg"
         file_id = str(uuid.uuid4())
         filename = f"{file_id}.{extension}"
-        
+
         if settings.APP_ENV == "development":
             os.makedirs(f"uploads/{folder}", exist_ok=True)
             file_path = f"uploads/{folder}/{filename}"
@@ -25,9 +25,9 @@ class FileUploadService:
         
         # In a real app, use aiobotocore to upload to S3
         # s3_url = f"https://{settings.AWS_S3_BUCKET}.s3.{settings.AWS_REGION}.amazonaws.com/{folder}/{filename}"
-        
+
         return f"https://assets.skinglow.website/{folder}/{filename}"
 
-    async def delete_image(self, url: str):
+    async def delete_image(self, url: str) -> None:
         """Delete an image from S3."""
         pass
