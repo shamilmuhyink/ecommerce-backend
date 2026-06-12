@@ -7,6 +7,8 @@ services:
       - "8000:8000"
     env_file:
       - .env
+    volumes:
+      - ./.env.staging:/app/.env.staging:ro
     # Optional: healthcheck if you want docker to auto-restart the container on failure
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]

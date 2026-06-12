@@ -78,17 +78,20 @@ jobs:
             mv /home/ubuntu/docker-compose.staging.yml /opt/ecommerce/
             cd /opt/ecommerce
             
-            # Fetch secrets from Hashicorp Vault and write to .env file
+            # Fetch secrets from Hashicorp Vault and write to env files
             echo "Fetching secrets from Vault..."
-            vault kv get -format=json secret/staging/ecommerce-backend | jq -r '(if .data.data then .data.data else .data end) | to_entries | map("\(.key)=\(.value|tostring)") | .[]' > .env
+            vault kv get -format=json secret/staging/ecommerce-backend | jq -r '(if .data.data then .data.data else .data end) | to_entries | map("\(.key)=\(.value|tostring)") | .[]' > .env.staging
             
-            # Verify .env is not empty (vault may be sealed or token expired)
-            if [ ! -s .env ]; then
-              echo "ERROR: .env file is empty! Vault extraction failed. Is Vault unsealed?"
+            # Also copy as .env for docker-compose env_file directive
+            cp .env.staging .env
+            
+            # Verify .env.staging is not empty (vault may be sealed or token expired)
+            if [ ! -s .env.staging ]; then
+              echo "ERROR: .env.staging file is empty! Vault extraction failed. Is Vault unsealed?"
               vault status || true
               exit 1
             fi
-            echo ".env file created with $(wc -l < .env) variables."
+            echo ".env.staging file created with $(wc -l < .env.staging) variables."
             
             # Export environment variable for docker-compose
             export GITHUB_REPOSITORY_OWNER="${{ github.repository_owner }}"
