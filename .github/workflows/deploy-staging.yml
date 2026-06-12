@@ -93,10 +93,10 @@ jobs:
             docker rm -f ecommerce_backend_staging 2>/dev/null || true
             
             # Run Alembic migrations against Supabase
-            docker-compose -f docker-compose.staging.yml run --rm backend alembic upgrade head
+            docker compose -f docker-compose.staging.yml run --rm backend alembic upgrade head
             
             # Restart the services
-            docker-compose -f docker-compose.staging.yml up -d
+            docker compose -f docker-compose.staging.yml up -d
             
             # Cleanup unused images
             docker image prune -f
