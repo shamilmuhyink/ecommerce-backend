@@ -26,7 +26,7 @@ class FileUploadService:
         # In a real app, use aiobotocore to upload to S3
         # s3_url = f"https://{settings.AWS_S3_BUCKET}.s3.{settings.AWS_REGION}.amazonaws.com/{folder}/{filename}"
         
-        return f"https://assets.skinglow.com/{folder}/{filename}"
+        return f"https://assets.skinglow.website/{folder}/{filename}"
 
     async def delete_image(self, url: str):
         """Delete an image from S3."""

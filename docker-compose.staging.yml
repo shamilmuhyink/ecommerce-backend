@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   backend:
-    image: ghcr.io/${GITHUB_REPOSITORY_OWNER}/skinglow-backend:staging
+    image: ghcr.io/${GITHUB_REPOSITORY_OWNER}/ecommerce-backend:staging
     container_name: ecommerce_backend_staging
     restart: unless-stopped
     ports:
