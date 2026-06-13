@@ -38,10 +38,17 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 15
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
 
-    # AWS
+    # AWS (for SES and Production S3)
     AWS_REGION: str = "ap-south-1"
     AWS_S3_BUCKET: str = Field(...)
     AWS_SES_SENDER: str = Field(...)
+
+    # OCI Object Storage (for Staging)
+    OCI_S3_ENDPOINT_URL: str = Field(...)
+    OCI_S3_ACCESS_KEY_ID: str = Field(...)
+    OCI_S3_SECRET_ACCESS_KEY: str = Field(...)
+    OCI_S3_BUCKET_NAME: str = Field(...)
+    OCI_S3_PUBLIC_URL_PREFIX: str = Field(...)
 
     # Resend (Staging Only)
     RESEND_API_KEY: str = ""
