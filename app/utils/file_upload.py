@@ -2,6 +2,7 @@ import os
 import uuid
 
 import aiobotocore.session
+from botocore.config import Config
 from fastapi import UploadFile
 
 from app.core.config import get_settings
@@ -34,6 +35,7 @@ class FileUploadService:
                 aws_access_key_id=settings.OCI_S3_ACCESS_KEY_ID,
                 aws_secret_access_key=settings.OCI_S3_SECRET_ACCESS_KEY,
                 region_name=settings.OCI_S3_REGION_NAME,
+                config=Config(signature_version="s3v4", s3={"addressing_style": "path"}),
             ) as client:
                 await client.put_object(
                     Bucket=settings.OCI_S3_BUCKET_NAME,
@@ -68,7 +70,8 @@ class FileUploadService:
                     endpoint_url=settings.OCI_S3_ENDPOINT_URL,
                     aws_access_key_id=settings.OCI_S3_ACCESS_KEY_ID,
                     aws_secret_access_key=settings.OCI_S3_SECRET_ACCESS_KEY,
-                    region_name="us-ashburn-1",
+                    region_name=settings.OCI_S3_REGION_NAME,
+                    config=Config(signature_version="s3v4", s3={"addressing_style": "path"}),
                 ) as client:
                     await client.delete_object(Bucket=settings.OCI_S3_BUCKET_NAME, Key=key)
         elif settings.APP_ENV == "production":
