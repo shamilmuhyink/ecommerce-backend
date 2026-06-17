@@ -49,6 +49,7 @@ class Settings(BaseSettings):
     OCI_S3_SECRET_ACCESS_KEY: str = Field(...)
     OCI_S3_BUCKET_NAME: str = Field(...)
     OCI_S3_PUBLIC_URL_PREFIX: str = Field(...)
+    OCI_S3_REGION_NAME: str = Field(...)
 
     # Resend (Staging Only)
     RESEND_API_KEY: str = ""

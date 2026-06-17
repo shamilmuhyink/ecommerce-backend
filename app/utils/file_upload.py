@@ -33,7 +33,7 @@ class FileUploadService:
                 endpoint_url=settings.OCI_S3_ENDPOINT_URL,
                 aws_access_key_id=settings.OCI_S3_ACCESS_KEY_ID,
                 aws_secret_access_key=settings.OCI_S3_SECRET_ACCESS_KEY,
-                region_name="us-ashburn-1",
+                region_name=settings.OCI_S3_REGION_NAME,
             ) as client:
                 await client.put_object(
                     Bucket=settings.OCI_S3_BUCKET_NAME,
