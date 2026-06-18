@@ -27,7 +27,7 @@ class FileUploadService:
         file_id = str(uuid.uuid4())
         filename = f"{file_id}.{extension}"
 
-        if settings.APP_ENV == "Staging":
+        if settings.APP_ENV == "staging":
             # Upload to OCI Object Storage
             content = await file.read()
             key = f"{folder}/{filename}"
