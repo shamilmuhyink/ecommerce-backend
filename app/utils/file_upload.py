@@ -3,9 +3,11 @@ import uuid
 
 import aiobotocore.session
 from botocore.config import Config
+from botocore.exceptions import ClientError
 from fastapi import UploadFile
 
 from app.core.config import get_settings
+from app.core.exceptions import AppException
 
 settings = get_settings()
 
@@ -25,25 +27,49 @@ class FileUploadService:
         file_id = str(uuid.uuid4())
         filename = f"{file_id}.{extension}"
 
-        if settings.APP_ENV == "staging":
+        if settings.APP_ENV == "Staging":
             # Upload to OCI Object Storage
             content = await file.read()
             key = f"{folder}/{filename}"
-            async with self.session.create_client(
-                "s3",
-                endpoint_url=settings.OCI_S3_ENDPOINT_URL,
-                aws_access_key_id=settings.OCI_S3_ACCESS_KEY_ID,
-                aws_secret_access_key=settings.OCI_S3_SECRET_ACCESS_KEY,
-                region_name=settings.OCI_S3_REGION_NAME,
-                config=Config(signature_version="s3v4", s3={"addressing_style": "path"}),
-            ) as client:
-                await client.put_object(
-                    Bucket=settings.OCI_S3_BUCKET_NAME,
-                    Key=key,
-                    Body=content,
-                    ContentType=file.content_type or "application/octet-stream",
+            try:
+                async with self.session.create_client(
+                    "s3",
+                    endpoint_url=settings.OCI_S3_ENDPOINT_URL,
+                    aws_access_key_id=settings.OCI_S3_ACCESS_KEY_ID,
+                    aws_secret_access_key=settings.OCI_S3_SECRET_ACCESS_KEY,
+                    region_name=settings.OCI_S3_REGION_NAME,
+                    config=Config(
+                        signature_version="s3v4",
+                        s3={"addressing_style": "path"},
+                        request_checksum_calculation="when_required",
+                    ),
+                ) as client:
+                    await client.put_object(
+                        Bucket=settings.OCI_S3_BUCKET_NAME,
+                        Key=key,
+                        Body=content,
+                        ContentType="application/octet-stream",
+                    )
+                return f"{settings.OCI_S3_PUBLIC_URL_PREFIX.rstrip('/')}/{key}"
+            except ClientError as e:
+                error_code = (
+                    e.response.get("Error", {}).get("Code", "Unknown")
+                    if hasattr(e, "response")
+                    else "Unknown"
                 )
-            return f"{settings.OCI_S3_PUBLIC_URL_PREFIX.rstrip('/')}/{key}"
+                raise AppException(
+                    message=f"Storage upload failed: {error_code}",
+                    code="UPLOAD_FAILED",
+                    status_code=502,
+                    details={"boto_error": str(e)},
+                ) from e
+            except Exception as e:
+                raise AppException(
+                    message="An internal error occurred while uploading the file.",
+                    code="UPLOAD_FAILED",
+                    status_code=500,
+                    details={"error": str(e)},
+                ) from e
 
         elif settings.APP_ENV == "production":
             # In a real app, use aiobotocore to upload to AWS S3
@@ -71,7 +97,11 @@ class FileUploadService:
                     aws_access_key_id=settings.OCI_S3_ACCESS_KEY_ID,
                     aws_secret_access_key=settings.OCI_S3_SECRET_ACCESS_KEY,
                     region_name=settings.OCI_S3_REGION_NAME,
-                    config=Config(signature_version="s3v4", s3={"addressing_style": "path"}),
+                    config=Config(
+                        signature_version="s3v4",
+                        s3={"addressing_style": "path"},
+                        request_checksum_calculation="when_required",
+                    ),
                 ) as client:
                     await client.delete_object(Bucket=settings.OCI_S3_BUCKET_NAME, Key=key)
         elif settings.APP_ENV == "production":
