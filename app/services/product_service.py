@@ -15,6 +15,7 @@ from app.repositories.product_repository import (
     ProductVariantRepository,
 )
 from app.schemas.product import ProductCreate, ProductUpdate
+from app.workers.embedding_tasks import dispatch_product_embedding
 
 logger = structlog.get_logger(__name__)
 
@@ -31,6 +32,19 @@ class ProductService:
         self._product_repo = product_repo
         self._variant_repo = variant_repo
         self._category_repo = category_repo
+
+    @staticmethod
+    def _build_product_data(product: Product) -> dict:
+        """Build a JSON-serializable dict of product fields for embedding."""
+        return {
+            "name": product.name,
+            "description": product.description,
+            "sku": product.sku,
+            "price": product.price,
+            "category_name": (
+                product.category.name if product.category else None
+            ),
+        }
 
     async def create_product(
         self,
@@ -76,6 +90,13 @@ class ProductService:
             vendor_id=str(vendor_id),
             sku=product.sku,
         )
+
+        # Dispatch embedding sync (fire-and-forget)
+        dispatch_product_embedding.delay(
+            str(product.id),
+            self._build_product_data(product),
+        )
+
         return product
 
     async def get_product(self, db: AsyncSession, product_id: UUID) -> Product:
@@ -125,6 +146,19 @@ class ProductService:
             db, db_obj=product, obj_in=update_data
         )
         logger.info("product_updated", product_id=str(product_id))
+
+        # Re-sync embedding if name, description, or price changed
+        embedding_fields = {"name", "description", "price", "sku"}
+        if embedding_fields & update_data.keys():
+            product_with_details = await self._product_repo.get_with_details(
+                db, product_id
+            )
+            if product_with_details:
+                dispatch_product_embedding.delay(
+                    str(product_id),
+                    self._build_product_data(product_with_details),
+                )
+
         return updated
 
     async def search_products(
@@ -152,6 +186,17 @@ class ProductService:
 
         await db.commit()
         logger.info("product_approved", product_id=str(product_id))
+
+        # Approved products should be searchable — sync embedding
+        product_with_details = await self._product_repo.get_with_details(
+            db, product_id
+        )
+        if product_with_details:
+            dispatch_product_embedding.delay(
+                str(product_id),
+                self._build_product_data(product_with_details),
+            )
+
         return product
 
     async def reject_product(

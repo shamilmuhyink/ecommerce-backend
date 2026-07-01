@@ -15,6 +15,7 @@ celery_app = Celery(
         "app.workers.email_tasks",
         "app.workers.order_tasks",
         "app.workers.payout_tasks",
+        "app.workers.embedding_tasks",
     ],
 )
 
@@ -29,7 +30,7 @@ celery_app.conf.update(
     task_acks_late=True,
     worker_prefetch_multiplier=1,
     broker_connection_timeout=1.0,
-    broker_connection_retry_on_startup=False,
+    broker_connection_retry_on_startup=True,
     task_always_eager=settings.APP_ENV == "development",
 )
 
